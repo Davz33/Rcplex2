@@ -12,6 +12,8 @@ SEXP Rcplex(SEXP numcols_p,
 	    SEXP ub_p,
 	    SEXP Rsense,
 	    SEXP Rvtype,
+      SEXP x0_p, // added by me 2018.10.31
+      SEXP useStart_p, // added by me 2018.10.31
 	    SEXP isQP_p,
 	    SEXP isMIP_p,
 	    SEXP num_poplim,
@@ -28,6 +30,7 @@ SEXP Rcplex(SEXP numcols_p,
   char sense[numrows];
   char vtype[numcols];
   //  double dj[numrows];
+  int useStart   = INTEGER(useStart_p)[0]; // added by me 2018.10.31
   int isQP       = INTEGER(isQP_p)[0];
   int isMIP      = INTEGER(isMIP_p)[0];
   int trace      = INTEGER(getListElement(control,"trace"))[0];
@@ -107,6 +110,23 @@ SEXP Rcplex(SEXP numcols_p,
 		     lb, ub, NULL);
   if (status) {
     my_error(("Failed to copy problem data.\n"));
+  }
+
+  /* warm start; added by me 2018.10.31 */
+  if (useStart) {
+    double *x0 = REAL(x0_p);
+    int vind[numcols];
+    for (i = 0; i < numcols; ++i) {
+      vind[i] = i;
+    }
+    if (isMIP) {
+      status = CPXaddmipstarts(env, lp, 1, numcols, 0, vind, x0, NULL, NULL);
+    } else {
+      status = CPXcopystart(env, lp, NULL, NULL, x0, NULL, NULL, NULL);
+    }
+    if (status) {
+      my_error(("Failed to copy warm start information.\n"));
+    }
   }
 
   if (isQP) {

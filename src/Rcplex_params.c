@@ -21,6 +21,11 @@ void setparams(CPXENVptr env, SEXP control, int isQP, int isMIP) {
       status = CPXsetintparam(env, CPX_PARAM_SCRIND, 
 		  *INTEGER(VECTOR_ELT(control, i)) ? CPX_ON : CPX_OFF);
     }
+    /* threads: ***added by me 2018.10.7 */
+    else if(strcmp(cur_parm, "threads") == 0) {
+      status = CPXsetintparam(env, CPX_PARAM_THREADS, 
+      *INTEGER(VECTOR_ELT(control, i)));
+    }
     /* method */
     else if(strcmp(cur_parm, "method") == 0) {
       switch((value = *INTEGER(VECTOR_ELT(control, i)))) {

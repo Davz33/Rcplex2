@@ -5,6 +5,7 @@ check.Rcplex.control <- function(control, isQP)
     con <- list(
                 ## CPLEX parameters
                 trace             = 1L,  ## Messages to screen switch
+                threads           = 0L,  ## Number of threads: default 0L means automatic. ***added by me 2018.10.7
                 method            = 0L,  ## Algorithm for optimization
                 preind            = 1L,  ## Presolve switch
                 aggind            = -1L, ## Preprocessing aggregator limit
@@ -14,7 +15,7 @@ check.Rcplex.control <- function(control, isQP)
                                          ## normally the above should be
                                          ## '.Machine$integer.max' but CPLEX
                                          ## doesn't accept this ... 
-                epagap            = 0,## Absolute MIP gap tolerance 
+                epagap            = 1e-6,## Absolute MIP gap tolerance: ***was 0, changed to cplex default by me
                 epgap             = 1e-4,## Relative MIP gap tolerance 
                 tilim             = 1e74,## Optimizer time limit [sec]
                 disjcuts          = 0L,  ## disjunctive cuts switch
@@ -33,8 +34,8 @@ check.Rcplex.control <- function(control, isQP)
                 ## CPXMIP_OPTIMAL_POPULATED_TOL (130) except that there are
                 ## no more feasible solutions. So be careful with
                 ## status codes here!
-                solnpoolagap      = 0,   ## Absolute gap for solution pool
-                solnpoolgap       = 0,   ## Relative gap for solution pool
+                solnpoolagap      = 1e75,## Absolute gap for solution pool: ***was 0, changed to cplex default by me
+                solnpoolgap       = 1e75,## Relative gap for solution pool: ***was 0, changed to cplex default by me
                 ## NOTE: to find all solutions in the CPLEX user's manual
                 ## it is recommended to set solnpoolintensity to 4L.
                 ## But then MIP solutions are considered to have a status
@@ -52,6 +53,15 @@ check.Rcplex.control <- function(control, isQP)
       if(!con$trace %in% c(0L, 1L)) {
         warning("Improper value for trace parameter. Using default.")
         con$trace <- 1L
+      }
+    }
+
+    ## threads: ***added by me 2018.10.7
+    if (!is.null(con$threads)) {
+      con$threads <- as.integer(con$threads)
+      if(con$threads < 0L) {
+        warning("Improper value for threads parameter. Using default.")
+        con$threads <- 0L
       }
     }
 
@@ -98,7 +108,7 @@ check.Rcplex.control <- function(control, isQP)
       con$epagap <- as.numeric(con$epagap)
       if (con$epagap < 0) {
         warning("Improper value for epagap parameter. Using default.")
-        con$epagap <- 0
+        con$epagap <- 1e-6
       }
     }
     
@@ -106,7 +116,7 @@ check.Rcplex.control <- function(control, isQP)
       con$epgap <- as.numeric(con$epgap)
       if(con$epgap < 0 || con$epgap > 1) {
         warning("Improper value for epgap parameter. Using default.")
-        con$epgap <- 1e-4
+        con$epgap <- 1e-4 # ***was 0, changed to cplex default by me
       }
     }
     
@@ -177,7 +187,7 @@ check.Rcplex.control <- function(control, isQP)
       con$solnpoolagap <- as.numeric(con$solnpoolagap)
       if(!con$solnpoolagap >= 0) {
         warning("Improper value for solnpoolagap parameter: Using default")
-        con$solnpoolagap <- 0
+        con$solnpoolagap <- 1e75 # ***was 0, changed to cplex default by me
       }
     }
 
@@ -185,7 +195,7 @@ check.Rcplex.control <- function(control, isQP)
       con$solnpoolgap <- as.numeric(con$solnpoolgap)
       if(!con$solnpoolgap >= 0) {
         warning("Improper value for solnpoolagap parameter: Using default")
-        con$solnpoolgap <- 0
+        con$solnpoolgap <- 1e75 # ***was 0, changed to cplex default by me
       }
     }
 

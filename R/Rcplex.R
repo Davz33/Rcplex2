@@ -1,7 +1,7 @@
 ###########################################################################
 ## The following function solves a linear or quadratic program (LP|QP).
 
-Rcplex <- function(cvec, Amat, bvec, Qmat = NULL, lb = 0, ub = Inf,
+Rcplex <- function(cvec, Amat, bvec, Qmat = NULL, lb = 0, ub = Inf, x0 = NULL,
                    control = list(), objsense = c("min", "max"), sense = "L",
                    vtype = NULL, n = 1)
   {
@@ -20,6 +20,9 @@ Rcplex <- function(cvec, Amat, bvec, Qmat = NULL, lb = 0, ub = Inf,
                  is(Qmat, "simple_triplet_matrix"),
                 nrow(Qmat) == numcols, ncol(Qmat) == numcols)
     }
+
+    ## check if x0 is given ## added by me 2018.10.31
+    if (!is.null(x0)) stopifnot(length(x0)==numcols, is.double(x0))
 
     ## check data dimensions
     stopifnot(length(cvec) == numcols, is.double(cvec),
@@ -81,6 +84,7 @@ Rcplex <- function(cvec, Amat, bvec, Qmat = NULL, lb = 0, ub = Inf,
     Qcpx <- toCPXMatrix(Qmat)
 
     isQP <- ifelse(is.null(Qcpx), 0L, 1L)
+    useStart <- ifelse(is.null(x0), 0L, 1L) ## added by me 2018.10.31
 
     control <- check.Rcplex.control(control, isQP)
     control <- split.control.list  (control)
@@ -100,6 +104,8 @@ Rcplex <- function(cvec, Amat, bvec, Qmat = NULL, lb = 0, ub = Inf,
                  as.double(ub),
                  as.character(sense),
                  as.character(vtype),
+                 as.double(x0), ## added by me 2018.10.31
+                 as.integer(useStart), ## added by me 2018.10.31
                  as.integer(isQP),
                  as.integer(isMIP),
                  as.integer(n),
