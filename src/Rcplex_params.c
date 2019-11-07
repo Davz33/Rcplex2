@@ -26,6 +26,11 @@ void setparams(CPXENVptr env, SEXP control, int isQP, int isMIP) {
       status = CPXsetintparam(env, CPX_PARAM_THREADS, 
       *INTEGER(VECTOR_ELT(control, i)));
     }
+    /* parallel.mode: ***added by me 2019.11.7 */
+    else if(strcmp(cur_parm, "parallel.mode") == 0) {
+      status = CPXsetintparam(env, CPX_PARAM_PARALLELMODE, 
+      *INTEGER(VECTOR_ELT(control, i)));
+    }
     /* method */
     else if(strcmp(cur_parm, "method") == 0) {
       switch((value = *INTEGER(VECTOR_ELT(control, i)))) {

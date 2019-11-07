@@ -6,6 +6,7 @@ check.Rcplex.control <- function(control, isQP)
                 ## CPLEX parameters
                 trace             = 1L,  ## Messages to screen switch
                 threads           = 0L,  ## Number of threads: default 0L means automatic. ***added by me 2018.10.7
+                parallel.mode     = 0L,  ## Parallel Mode: default 0L means automatic. -1 for opportunistic and 1 for deterministic. ***added by me 2019.11.7
                 method            = 0L,  ## Algorithm for optimization
                 preind            = 1L,  ## Presolve switch
                 aggind            = -1L, ## Preprocessing aggregator limit
@@ -62,6 +63,15 @@ check.Rcplex.control <- function(control, isQP)
       if(con$threads < 0L) {
         warning("Improper value for threads parameter. Using default.")
         con$threads <- 0L
+      }
+    }
+
+    ## parallel.mode: ***added by me 2019.11.7
+    if (!is.null(con$parallel.mode)) {
+      con$parallel.mode <- as.integer(con$parallel.mode)
+      if(!con$parallel.mode %in% c(-1L, 0L, 1L)) {
+        warning("Improper value for parallel.mode parameter. Using default.")
+        con$parallel.mode <- 0L
       }
     }
 
