@@ -19,7 +19,7 @@
 }
 \usage{
 Rcplex(cvec, Amat, bvec, Qmat = NULL,
-       lb = 0, ub = Inf, control = list(),
+       lb = 0, ub = Inf, x0 = NULL, control = list(),
        objsense = c("min", "max"), sense = "L", vtype = NULL, n = 1)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -36,6 +36,7 @@ Rcplex(cvec, Amat, bvec, Qmat = NULL,
     \code{lb=-Inf} to have no lower bound. Default 0.}
   \item{ub}{ Upper bound on the problem variables. See \code{lb} for
     further details. Default \code{Inf}.}
+  \item{x0}{ Initial solution passed to solver (warm-start). Default do not warm-start.}
   \item{control}{ A list of CPLEX parameters. See *Details* }
   \item{objsense}{ Either \code{"max"} or \code{"min"}, determines the optimization
     direction. Default \code{"min"}}
@@ -81,6 +82,8 @@ Rcplex(cvec, Amat, bvec, Qmat = NULL,
 
   \describe{
     \item{trace:}{Turn CPLEX output on (1) or off(0). Default 1.}
+    \item{threads:}{The number of threads to use by the solver. Default 0 (automatic).}
+    \item{parallel.mode:}{Mode of paralleling computation of the solver. Default 0 (automatic). Or -1 (opportunistic), 1 (deterministic).}
     \item{maxcalls:}{Number of calls to the CPLEX optimizer before
       license is released. Set to 1 to get a new license on every call
       to Rcplex. Can be any positive number. Default 500.}
