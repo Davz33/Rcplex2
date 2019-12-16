@@ -35,8 +35,8 @@ check.Rcplex.control <- function(control, isQP)
                 ## CPXMIP_OPTIMAL_POPULATED_TOL (130) except that there are
                 ## no more feasible solutions. So be careful with
                 ## status codes here!
-                solnpoolagap      = 1e75,## Absolute gap for solution pool: ***was 0, changed to cplex default by me
-                solnpoolgap       = 1e75,## Relative gap for solution pool: ***was 0, changed to cplex default by me
+                solnpoolagap      = 0,## Absolute gap for solution pool
+                solnpoolgap       = 0,## Relative gap for solution pool
                 ## NOTE: to find all solutions in the CPLEX user's manual
                 ## it is recommended to set solnpoolintensity to 4L.
                 ## But then MIP solutions are considered to have a status
