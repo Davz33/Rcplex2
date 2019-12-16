@@ -1,4 +1,4 @@
-Package: Rcplex
+Package: Rcplex2
 Version: 0.3-3
 Date: 2016-06-09
 Title: R Interface to CPLEX
