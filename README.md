@@ -17,12 +17,12 @@ Please first install the IBM ILOG CPLEX Optimization Studio, you can get a free 
 
 Clone this git repo:
 ```
-git clone https://github.com/ImNotaGit/Rcplex2.git
+git clone https://github.com/ruppinlab/Rcplex2.git
 ```
 
 Compress the repo into a .tar.gz file:
 ```
-tar czf Rcplex2.tar.gz Rcplex2
+tar zcf Rcplex2.tar.gz Rcplex2
 ```
 
 Then use the command below to install. Replace `${cplex_dir}` with the installation directory of CPLEX, e.g. something like `$HOME/ibm/ILOG/CPLEX_Studio1210`
