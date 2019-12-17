@@ -20,18 +20,15 @@ Clone this git repo:
 git clone https://github.com/ruppinlab/Rcplex2.git
 ```
 
-Compress the repo into a .tar.gz file:
-```
-tar zcf Rcplex2.tar.gz Rcplex2
-```
+Then use a command in the form of `R CMD INSTALL --configure-args="PKG_CFLAGS='AAA' PKG_CPPFLAGS=BBB PKG_LIBS='CCC'" Rcplex2` to install, where AAA, BBB and CCC are determined by the variables `CFLAGS` and `CLNFLAGS` in the file <cplex_path>/examples/<system>/<libformat>/Makefile. Specifically, BBB is the last term in `CFLAGS`, AAA are the terms excluding the last in `CFLAGS` (in that order), and CCC are `-L$(CPLEXLIBDIR)` plus all the terms in `CLNFLAGS`. For more system-specific details, see the inst/INSTALL file.
 
-Then use the command below to install. Replace `${cplex_dir}` with the installation directory of CPLEX, e.g. something like `$HOME/ibm/ILOG/CPLEX_Studio1210`
+Below is an example that worked on Biowulf (the system is 64-bit Linux). Replace `${cplex_dir}` with the installation directory of CPLEX, e.g. something like `$HOME/ibm/ILOG/CPLEX_Studio1210`
 
 ```
 R CMD INSTALL --configure-args="PKG_CFLAGS='-fPIC -m64 -fno-strict-aliasing' \
     PKG_CPPFLAGS=-I${cplex_dir}/cplex/include \
     PKG_LIBS='-L${cplex_dir}/cplex/lib/x86-64_linux/static_pic \
-    -lcplex -lm -lpthread'" Rcplex2.tar.gz
+    -lcplex -lm -lpthread'" Rcplex2
 ```
 
-Note: The original configure file is not perfect, as a result this package may be hard to install. I changed the configure file in a dirty way to circumvent an issue related to `CPXversion` (basically I set the value of the variable `ac_cv_search_CPXversion` to `"none required"` by default), which worked for me but may have side effects on other systems. The original configure file was saved as configure.bak.
+Note: In some cases, there may be an issue related to `CPXversion` that prevents successful installation. I changed the configure file in a dirty way to circumvent this issue (basically I set the value of the variable `ac_cv_search_CPXversion` to `"none required"` by default), which worked for me but may have side effects in other cases. The original configure file was saved as configure.bak.
