@@ -1,7 +1,8 @@
 # Rcplex2
-Adding minor functions to the Rcplex package.
 
-I made the following changes to the original Rcplex 0.3-3 package from CRAN:
+This R package modifies the original Rcplex 0.3-3 package from CRAN, with added functionality.
+
+Changes to the original package include:
   1. Enable specifying the number of threads to use and parallel mode (opportunistic or deterministic);
   2. Enable warm start (i.e. providing an inition solution);
   3. Changed the default values of some of the parameters;
