@@ -3157,7 +3157,7 @@ if test "${ac_cv_search_CPXversion+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   ac_func_search_save_LIBS=$LIBS
-ac_cv_search_CPXversion="none required"
+ac_cv_search_CPXversion=no
 cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
