@@ -22,7 +22,7 @@ git clone https://github.com/ruppinlab/Rcplex2.git
 
 Then use a command in the form of `R CMD INSTALL --configure-args="PKG_CFLAGS='AAA' PKG_CPPFLAGS=BBB PKG_LIBS='CCC'" Rcplex2` to install, where AAA, BBB and CCC are determined by the variables `CFLAGS` and `CLNFLAGS` in the file \<cplex_dir\>/cplex/examples/\<system\>/\<libformat\>/Makefile. Specifically, BBB is the last term in `CFLAGS`, AAA are the terms excluding the last in `CFLAGS` (in that order), and CCC are `-L$(CPLEXLIBDIR)` plus all the terms in `CLNFLAGS`. For more system-specific details, see the inst/INSTALL file.
 
-Below is an example for installation on a 64-bit Linux system. Replace `${cplex_dir}` with the installation directory of CPLEX, e.g. something like `$HOME/ibm/ILOG/CPLEX_Studio1210`. This exampled worked for me on Biowulf.
+Below is an example for installation on a 64-bit Linux system. Replace `${cplex_dir}` with the installation directory of CPLEX, e.g. something like `$HOME/ibm/ILOG/CPLEX_Studio1210`. This example worked for me on Biowulf.
 
 ```
 R CMD INSTALL --configure-args="PKG_CFLAGS='-fPIC -m64 -fno-strict-aliasing' \
