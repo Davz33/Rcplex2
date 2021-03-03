@@ -28,8 +28,21 @@ void setparams(CPXENVptr env, SEXP control, int isQP, int isMIP) {
     }
     /* parallel.mode: ***added by me 2019.11.7 */
     else if(strcmp(cur_parm, "parallel.mode") == 0) {
-      status = CPXsetintparam(env, CPX_PARAM_PARALLELMODE, 
-      *INTEGER(VECTOR_ELT(control, i)));
+      switch((value = *INTEGER(VECTOR_ELT(control, i)))) {
+      case 0:
+  value = CPX_PARALLEL_AUTO;
+  break;
+      case -1:
+  value = CPX_PARALLEL_OPPORTUNISTIC;
+  break;
+      case 1:
+  value = CPX_PARALLEL_DETERMINISTIC;
+  break;
+      default:
+  warning("Unknown optimization method %d, using default\n", value);
+  value = CPX_PARALLEL_AUTO;
+      }
+  status = CPXsetintparam(env, CPX_PARAM_PARALLELMODE, value);
     }
     /* method */
     else if(strcmp(cur_parm, "method") == 0) {
@@ -70,6 +83,27 @@ void setparams(CPXENVptr env, SEXP control, int isQP, int isMIP) {
     else if(strcmp(cur_parm, "itlim") == 0) {
       status = CPXsetintparam(env, CPX_PARAM_ITLIM, 
 			      *INTEGER(VECTOR_ELT(control, i)));
+    }
+    /* qp.opt: ***added by me 2021.03.03 */
+    else if(strcmp(cur_parm, "qp.opt") == 0) {
+      switch((value = *INTEGER(VECTOR_ELT(control, i)))) {
+      case 0:
+  value = CPX_OPTIMALITYTARGET_AUTO;
+  break;
+      case 1:
+  value = CPX_OPTIMALITYTARGET_OPTIMALCONVEX;
+  break;
+      case 2:
+  value = CPX_OPTIMALITYTARGET_FIRSTORDER;
+  break;
+      case 3:
+  value = CPX_OPTIMALITYTARGET_OPTIMALGLOBAL;
+  break;
+      default:
+  warning("Unknown optimization method %d, using default\n", value);
+  value = CPX_OPTIMALITYTARGET_AUTO;
+      }
+      if (isQP) status = CPXsetintparam(env, CPXPARAM_OptimalityTarget, value);
     }
     else if(strcmp(cur_parm, "epgap") == 0) {
       status = CPXsetdblparam(env, CPX_PARAM_EPGAP,

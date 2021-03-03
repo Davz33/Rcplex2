@@ -16,6 +16,7 @@ check.Rcplex.control <- function(control, isQP)
                                          ## normally the above should be
                                          ## '.Machine$integer.max' but CPLEX
                                          ## doesn't accept this ... 
+                qp.opt            = 0L,  ## QP optimality target: default 0L auto (nonconvex will stop); 1 for global optimality to a convex model; 2 for local optimality; 3 for global optimality for nonconvex, and change problem to MIQP if needed. ***added by me 2021.3.3
                 epagap            = 1e-6,## Absolute MIP gap tolerance: ***was 0, changed to cplex default by me
                 epgap             = 1e-4,## Relative MIP gap tolerance 
                 tilim             = 1e74,## Optimizer time limit [sec]
@@ -111,6 +112,15 @@ check.Rcplex.control <- function(control, isQP)
       if((con$itlim < 0L) ||  (con$itlim > 2.1e+9L)) {
         warning("Improper value for itlim parameter. Using default.")
         con$itlim <- 2.1e+9L 
+      }
+    }
+
+    ## qp.opt: ***added by me 2021.3.3
+    if (!is.null(con$qp.opt)) {
+      con$qp.opt <- as.integer(con$qp.opt)
+      if(!con$qp.opt %in% c(0L, 1L, 2L, 3L)) {
+        warning("Improper value for qp.opt parameter. Using default.")
+        con$qp.opt <- 0L
       }
     }
 

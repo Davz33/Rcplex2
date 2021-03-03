@@ -102,6 +102,7 @@ Rcplex(cvec, Amat, bvec, Qmat = NULL,
       -1 (automatic), 0 (do not use), any positive integer}
     \item{itlim:}{Maximum number of simplex iterations. Can be any
       nonnegative number. Default 1e8.}
+    \item{qp.opt:}{Optimality Target for QP. Default 0 auto (nonconvex will stop); 1 for global optimality to a convex model; 2 for local optimality; 3 for global optimality for nonconvex, and change problem to MIQP if needed.}
     \item{epagap:}{Absolute MIP optimality gap tolerance. Can be any
       nonnegative number. Default 1e-6.}
     \item{epgap:}{Relative MIP optimality gap tolerance. Can be any
