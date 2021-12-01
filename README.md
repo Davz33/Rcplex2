@@ -26,7 +26,7 @@ Then use a command in the form of `R CMD INSTALL --configure-args="PKG_CFLAGS='A
 Below is an example for installation on a 64-bit Linux system. Replace `${cplex_dir}` with the installation directory of CPLEX, e.g. something like `$HOME/ibm/ILOG/CPLEX_Studio1210`. This example worked for me on Biowulf.
 
 ```
-R CMD INSTALL --configure-args="PKG_CFLAGS='-fPIC -m64 -fno-strict-aliasing' \
+R CMD INSTALL --configure-args="PKG_CFLAGS='-fPIC -m64' \
     PKG_CPPFLAGS=-I${cplex_dir}/cplex/include \
     PKG_LIBS='-L${cplex_dir}/cplex/lib/x86-64_linux/static_pic \
     -lcplex -lm -lpthread'" Rcplex2
